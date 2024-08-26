@@ -6,6 +6,7 @@ public class Car {
 	private boolean isClean;
 	private double amountOfGas;
 	private Wheel[] wheels = new Wheel[4];
+	private Radio radio;
 	
 	//constructors
 	public Car() {
@@ -62,10 +63,26 @@ public class Car {
 	public void setWheels(Wheel[] wheels) {
 		this.wheels = wheels;
 	}
+	public Radio getRadio() {
+		return radio;
+	}
+	public void setRadio(Radio radio) {
+		this.radio = radio;
+	}
 	
+	// static belongs to class, not instance method
+	public void drive(int numMiles) {
+		for(int i = 0; i < numMiles; i++) {
+			System.out.println("+");
+			amountOfGas -= 0.1;
+		}
+		System.out.println();
+		mileage += numMiles;
+	}
 	
-	//methods
-	
+	public void cleanCar() {
+		isClean = true;
+	}
 	
 	
 	private void setWheelsOnCar() {
