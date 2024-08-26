@@ -10,7 +10,7 @@ public class Fan {
 	private double radius = 5.0;
 	private String color = "Blue";
 	private int id;
-	
+	public static int count = 1;
 	
 	// constructor(s)
 	
@@ -19,7 +19,7 @@ public class Fan {
 		on = false;
 		radius = 5.0;
 		color = "Blue";
-		id = idMaker(0);
+		id = idMaker(id);
 		
 	}
 	
@@ -28,7 +28,7 @@ public class Fan {
 		this.on = on;
 		this.radius = radius;
 		this.color = color;
-		id = idMaker(0);
+		id = idMaker(id);
 	}
 	
 	// getters and setters
@@ -65,20 +65,20 @@ public class Fan {
 	//methods
 	
 	
-	private int idMaker(int count) {
-		count++;
-		return count;
+	private static int idMaker(int id) {
+		id = count++;
+		return id;
 	}
 
 	@Override
 	public String toString() {
 		if (on) {
-			return "Fan ID: " + id + "\n Fan Speed: " + speed 
-					+ "\n Color: " + color + "\n Radius: " + radius;
+			return "Fan ID: " + id + "\nFan Speed: " + speed 
+					+ "\nColor: " + color + "\nRadius: " + radius;
 		}
 		else {
-			return "Fan ID: " + id + "\n Color: " + color + 
-					"\n Radius: " + radius + "\n Fan is off";
+			return "Fan ID: " + id + "\nColor: " + color + 
+					"\nRadius: " + radius + "\nFan is off";
 		}
 	}
 	
