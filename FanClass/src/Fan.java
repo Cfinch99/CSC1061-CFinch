@@ -1,16 +1,16 @@
 
 public class Fan {
 	// data types, separated between constants and variables
-	private final int SLOW = 1;
-	private final int MEDIUM = 2;
-	private final int FAST = 3;
+	public final static int SLOW = 1;
+	public final static int MEDIUM = 2;
+	public final static int FAST = 3;
 	
 	private int speed = SLOW;
 	private boolean on = false;
 	private double radius = 5.0;
 	private String color = "Blue";
 	private int id;
-	public static int count = 1;
+	private static int count = 1;
 	
 	// constructor(s)
 	
