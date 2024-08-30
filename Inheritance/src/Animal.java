@@ -15,6 +15,11 @@ public class Animal {
 	}
 	
 	@Override
+	public boolean equals(Object anim) {
+		return true;
+	}
+	
+	@Override
 	public String toString() {
 		return "Animal [name=" + name + ", weight=" + weight + ", height=" + height + "]";
 	}
