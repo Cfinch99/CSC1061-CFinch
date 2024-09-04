@@ -2,19 +2,21 @@ import java.util.Date;
 
 public class GeometricObject {
 	
-	private String color;
-	private boolean isFilled;
+	private String color = "white";
+	private boolean isFilled = false;
 	private Date dateCreated;
 	
 	
 	public GeometricObject() {
 		super();
+		dateCreated = new Date();
 	}
 
 	public GeometricObject(String color, boolean isFilled) {
 		super();
 		this.color = color;
 		this.isFilled = isFilled;
+		dateCreated = new Date();
 	}
 
 	public String getColor() {
