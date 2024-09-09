@@ -9,11 +9,14 @@ public class TestGeometricObject {
 		cir1.setColor("Red");
 		cir1.setFilled(true);
 		
-		File inputFile = new File("input");
+		File inputFile = new File("C:\\Users\\Carte\\CSC1061-CFinch\\Polymorphism\\src\\input.txt");
 		Scanner input = new Scanner(inputFile);
-		String line = input.nextLine();
-		System.out.println(line);
-		
+		//String line = input.nextLine();
+		//System.out.println(line);
+		while (input.hasNextLine()) {
+			String line2 = input.nextLine();
+			System.out.println(line2);
+		}
 
 	}
 
