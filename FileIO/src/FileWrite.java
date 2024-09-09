@@ -8,7 +8,7 @@ import java.io.IOException;
 public class FileWrite {
 
 	public static void main(String[] args) throws IOException{
-		File myFile = new File("kmfilewrite.txt");
+		File myFile = new File("filewrite.txt");
 		if(!myFile.exists()) {
 			try {
 				if(myFile.createNewFile()){
