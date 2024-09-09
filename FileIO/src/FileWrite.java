@@ -4,6 +4,11 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 //other file io stuff can be found under polymorphism projects
+// try and catch
+// exception handling
+// IOException
+//IndexOutOfBounds
+//
 
 public class FileWrite {
 
@@ -22,6 +27,8 @@ public class FileWrite {
 		}
 		
 		FileWriter fileWriter = new FileWriter(myFile.getName(), false);
+		// false is overwrite, true appends to file
+		// flush the load of text, close flushes and closes
 		BufferedWriter bw = new BufferedWriter(fileWriter);
 		bw.write("The moon is made of cheese");
 		bw.flush();
