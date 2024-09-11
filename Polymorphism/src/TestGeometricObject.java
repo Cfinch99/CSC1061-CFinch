@@ -1,6 +1,7 @@
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.List;
 import java.util.Scanner;
 
 public class TestGeometricObject {
@@ -54,6 +55,7 @@ public class TestGeometricObject {
 			System.out.println("Error while closing writer.");
 			System.exit(-1);
 		}
+		List<GeometricObject> objList = db.readDatabase();
 		
 		}
 

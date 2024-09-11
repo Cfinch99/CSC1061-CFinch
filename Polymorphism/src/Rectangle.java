@@ -13,7 +13,6 @@ public class Rectangle extends GeometricObject{
 	private double height;
 	
 	public Rectangle() {
-		
 	}
 	
 	public Rectangle(double width, double height) {
