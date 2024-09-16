@@ -1,5 +1,5 @@
 
-public class Animal {
+public abstract class Animal {
 	
 	private String name;
 	private double weight;
@@ -10,9 +10,13 @@ public class Animal {
 	
 	
 	
-	public String makeSound() {
-		return ("Blah Blah");
-	}
+	public abstract String makeSound();
+		
+	
+	
+//	public String makeSound() {
+//		return ("Blah Blah");
+//	}
 	
 	@Override
 	public boolean equals(Object anim) {

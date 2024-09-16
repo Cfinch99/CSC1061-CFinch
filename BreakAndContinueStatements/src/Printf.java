@@ -1,11 +1,13 @@
 
 public class Printf {
-
-	public static void main(String[] args) {
+/**
+ *
+ * @param args
+ */
+	public static void main(String[] args) { 
 		int num = 67;
 		int num2 = 4595492;
-		
-		
+	
 		//%d for int
 		//%f for floating point
 		//%s for string
