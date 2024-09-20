@@ -4,6 +4,7 @@ public abstract class Vehicle {
 	private String id;
 	
 	
+	
 	public Vehicle(String color, String id) {
 		
 	}

@@ -1,9 +1,9 @@
 
-public abstract class FIAbstract {	
+public abstract class FIAbstract implements Comparable<FIAbstract>, Cloneable {	
 	private String fiName;
 	private long financialInstitutionID;
 	private long routingNumber;
-	private String address;
+	private Address address;
 	
 	public FIAbstract(String name) {
 		fiName=name;
@@ -33,14 +33,37 @@ public abstract class FIAbstract {
 		this.routingNumber = routingNumber;
 	}
 
-	public String getAddress() {
+	public Address getAddress() {
 		return address;
 	}
 
-	public void setAddress(String address) {
+	public void setAddress(Address address) {
 		this.address = address;
 	}
 
 	public abstract double getInterestRate();
+
+	@Override
+	public int compareTo(FIAbstract other) {
+		if (financialInstitutionID < other.financialInstitutionID) {
+			return -1;
+		}
+		if (financialInstitutionID > other.financialInstitutionID) {
+			return 1;
+		}
+		return 0;
+	}
+	@Override
+	public FIAbstract clone() throws CloneNotSupportedException{
+		FIAbstract clone = (FIAbstract) super.clone();
+		clone.address = address.clone();
+		return clone;
+	}
+	
+	@Override
+	public String toString() {
+		return "FIAbstract [fiName=" + fiName + ", financialInstitutionID=" + financialInstitutionID
+				+ ", routingNumber=" + routingNumber + ", address=" + address + "]";
+	}
 
 }
