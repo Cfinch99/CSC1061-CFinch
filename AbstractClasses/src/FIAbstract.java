@@ -58,6 +58,7 @@ public abstract class FIAbstract implements Comparable<FIAbstract>, Cloneable {
 		FIAbstract clone = (FIAbstract) super.clone();
 		clone.address = address.clone();
 		return clone;
+		// for deeper clone, create new. ie clone.whatever = new whatever. downcast whatever into whatever
 	}
 	
 	@Override
