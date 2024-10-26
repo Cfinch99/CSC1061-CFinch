@@ -2,9 +2,12 @@ package edu.frcc.CSC1061jfa24.Exam2;
 
 import java.io.File;
 import java.util.ArrayDeque;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Deque;
 import java.util.Iterator;
 import java.util.Queue;
+import java.util.Stack;
 
 
 
@@ -37,6 +40,25 @@ public class FileTree implements Iterable <FileNode> {
 	 * @param fileNode
 	 */
 	private void buildTree(FileNode fileNode) {
+		// filenode.listFiles to see files starting at root
+		// first create arraylist for children
+		
+		
+		ArrayList<FileNode> nodeList = new ArrayList<>();
+		FileNode node = null;
+		File[] kids;
+		kids = fileNode.getFile().listFiles();
+		
+		if(kids != null) {
+			for(File file:kids) {
+				node = new FileNode(file);
+				nodeList.add(node);
+			}
+			fileNode.setChildNodes(nodeList);
+			for(FileNode childNode:nodeList) {
+				buildTree(childNode);
+			}
+		}
 
 	
 	}
@@ -50,19 +72,34 @@ public class FileTree implements Iterable <FileNode> {
 	 * @return 
 	 */
 	private class DepthFirstIterator implements Iterator<FileNode> {
-		
+		Stack<FileNode> stck1 = new Stack<>();
+		Stack<FileNode> stck2 = new Stack<>();
 		public DepthFirstIterator() {
+			//for each childNode, push to stack 1
+			
+			stck1.push(root);
+			FileNode curr;
+			
+			while(!stck1.isEmpty()) {
+				curr = stck1.pop();
+				stck2.push(curr);
+				
+				for(FileNode nod:curr.getChildNodes()) {
+					stck1.push(nod);
+				}
+			}
+			
 
 		}
 
 		@Override
 		public boolean hasNext() {
-			return true;
+			return !stck2.isEmpty();
 		}
 		
 		@Override
 		public FileNode next() {
-			return null;
+			return stck2.pop();
 		}
 	}
 	
@@ -83,19 +120,31 @@ public class FileTree implements Iterable <FileNode> {
 	 * 
 	 */
 	private class BreadthFirstIterator implements Iterator<FileNode> {
-		
+		ArrayDeque<FileNode> deq1 = new ArrayDeque<>();
+		ArrayDeque<FileNode> deq2 = new ArrayDeque<>();
 		public BreadthFirstIterator() {
+			deq1.add(root);
+			while(!deq1.isEmpty()) {
+				deq1.addAll(deq1.getFirst().getChildNodes());
+				deq2.add(deq1.pop());
+			}
+//			for(FileNode node:deq1) {
+//				deq1.addAll(node.getChildNodes());
+//				deq2.add(deq1.pop());
+//				
+//			}
+			
 
 		}
 		
 		@Override
 		public boolean hasNext() {
-			return true;
+			return !deq2.isEmpty();
 		}
 
 		@Override
 		public FileNode next() {
-			return null;
+			return deq2.pop();
 		}
 		
 	}
