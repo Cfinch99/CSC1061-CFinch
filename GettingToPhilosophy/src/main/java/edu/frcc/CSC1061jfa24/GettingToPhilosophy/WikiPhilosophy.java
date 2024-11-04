@@ -1,6 +1,7 @@
 package edu.frcc.CSC1061jfa24.GettingToPhilosophy;
 
 import java.io.IOException;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,6 +10,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.nodes.Node;
+import org.jsoup.nodes.TextNode;
 import org.jsoup.select.Elements;
 
 public class WikiPhilosophy {
@@ -46,6 +48,7 @@ public class WikiPhilosophy {
     public static void testConjecture(String destination, String source, int limit) throws IOException {
         Document doc = null;
         Connection conn = Jsoup.connect(source);
+        int count = 0;
         try 
         {
             doc = conn.get();
@@ -64,7 +67,48 @@ public class WikiPhilosophy {
         for (Element para : paragraphs) {
             Iterable<Node> iter = new WikiNodeIterable(para);
             for (Node node : iter) {
-                
+            	if(node.absUrl("href").equals(destination)) {
+            		System.out.println(node.attr("href"));
+            		System.out.println("Made it to philosophy in " + (20 - limit) + (" links"));
+            		return;
+            	}
+            	if(limit == 0) {
+            		System.out.println("Did not make it to philosophy within 20 links");
+            		return;
+            	}
+            	if(node instanceof TextNode) {
+            		String txt = ((TextNode) node).getWholeText();
+            		
+            		for(int i = 0; i < txt.length(); i++) {
+            			if (txt.charAt(i) == '(') {
+            				count++;
+            			}
+            			if (txt.charAt(i) == ')') {
+            				count--;
+            			}
+            		}
+            	}
+            	if (count == 0 && !node.attr("href").isBlank()) {
+            		System.out.println(node.attr("href"));
+            		testConjecture(destination, node.absUrl("href"), limit - 1);
+            		return;
+            		}
+            	
+            	
+            	
+            	// personal notes and reminders
+            	
+                // check for link != null
+            	// check parantheses stack
+            	// does not start with #
+            	// print url
+            	// go until find philo or hit limit
+            	// then follow link recursively call testConjecture
+            	// node.attr? node.attr("href")
+            	// if node instanceof TextNode
+            
+            	
+            	
                 // TODO: FILL THIS IN!
             	// base case philosphy or limit
             	// if in text node(instanfeoftextnode) and
