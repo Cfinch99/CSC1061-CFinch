@@ -18,7 +18,7 @@ public class MyAVLTree <K,V> implements Map<K,V>, Iterable<V>{
 	private int size = 0;
 	private List<Node> path = new ArrayList<>();
 	
-	private class Node {
+	protected class Node {
 		private K key;
 		private V value;
 		private Node left = null;
@@ -30,6 +30,57 @@ public class MyAVLTree <K,V> implements Map<K,V>, Iterable<V>{
 			this.key = key;
 			this.value = value;
 		}
+
+
+		public K getKey() {
+			return key;
+		}
+
+
+		public void setKey(K key) {
+			this.key = key;
+		}
+
+
+		public V getValue() {
+			return value;
+		}
+
+
+		public void setValue(V value) {
+			this.value = value;
+		}
+
+
+		public Node getLeft() {
+			return left;
+		}
+
+
+		public void setLeft(Node left) {
+			this.left = left;
+		}
+
+
+		public Node getRight() {
+			return right;
+		}
+
+
+		public void setRight(Node right) {
+			this.right = right;
+		}
+
+
+		public int getHeight() {
+			return height;
+		}
+
+
+		public void setHeight(int height) {
+			this.height = height;
+		}
+		
 	}
 
 	@Override
@@ -257,15 +308,108 @@ public class MyAVLTree <K,V> implements Map<K,V>, Iterable<V>{
 		}
 	}
 	
-	private void balanceLL(Node gp, Node parent_of_gp) {
+	private void balanceLL(Node gp, Node parentOfGp) {
 		Node parent = gp.left;
+		Node child = parent.left;
+		
+		// deal with gp connection to rest of tree
 		if (gp == root) {
 			root = parent;
 		}
-		
+		else {
+			if (parentOfGp.left == gp){
+				parentOfGp.left = parent;
+			}
+			else {
+				parentOfGp.right = parent;
+			}
+		}
+		// make node hanging off parent move to gp
+		gp.left = parent.right;
+		// move gp to right of parent
 		parent.right = gp;
+		
+		// go bottom up, updating parent first would be wrong, using gp and childs old heights
+		updateHeight(gp);
+		updateHeight(child);
+		updateHeight(parent);
 	}
-
+	
+	private void balanceLR(Node gp, Node parentOfGp) {
+		Node parent = gp.left;
+		Node child = parent.right;
+		
+		if (gp == root) {
+			root = child;
+		}
+		else {
+			if (parentOfGp.left == gp){
+				parentOfGp.left = child;
+			}
+			else {
+				parentOfGp.right = child;
+			}
+		}
+		// since child is going to lose it's nodes
+		// assign them to the right place first
+		parent.right = child.left;
+		gp.left = child.right;
+		
+		//now change child's child nodes
+		child.left = parent;
+		child.right = gp;
+		
+		updateHeight(gp);
+		updateHeight(parent);
+		updateHeight(child);
+	}
+	
+	//homework
+	private void balanceRR(Node gp, Node parentOfGp) {
+			Node parent = gp.right;
+			Node child = parent.right;
+			
+			if (gp == root) {
+				root = parent;
+			}
+			else {
+				if (parentOfGp.left == gp){
+					parentOfGp.left = parent;
+				}
+				else {
+					parentOfGp.right = parent;
+				}
+			}
+			gp.right = parent.left;
+			parent.left = gp;
+			updateHeight(gp);
+			updateHeight(child);
+			updateHeight(parent);
+		}
+	private void balanceRL(Node gp, Node parentOfGp) {
+		Node parent = gp.right;
+		Node child = parent.left;
+		
+		if (gp == root) {
+			root = child;
+		}
+		else {
+			if (parentOfGp.left == gp){
+				parentOfGp.left = child;
+			}
+			else {
+				parentOfGp.right = child;
+			}
+		}
+		parent.left = child.right;
+		gp.right = child.left;
+		child.right = parent;
+		child.left = gp;
+		
+		updateHeight(gp);
+		updateHeight(parent);
+		updateHeight(child);
+	}
 	@Override
 	public V remove(Object key) {
 		// homework, 3 cases, look in D2L

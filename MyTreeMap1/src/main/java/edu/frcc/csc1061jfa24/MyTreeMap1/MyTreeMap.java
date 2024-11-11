@@ -35,7 +35,7 @@ public class MyTreeMap <K,V> implements Map<K,V>, Iterable<V>{
 		private List<V> list = new LinkedList<>();
 		
 		public RecursiveIterator() {
-			preOrder(root);
+			inOrder(root);
 		}
 		
 		private void inOrder(Node node) {
@@ -193,7 +193,73 @@ public class MyTreeMap <K,V> implements Map<K,V>, Iterable<V>{
 		// 1st step, find node. comparable K. keep track of parent
 		// 2nd check children
 		// cut off leaf, copy leaf, or in order predecessor through recursion
+		
+		Node current = root;
+		Node parent = null;
+		Comparable<K> k = (Comparable<K>) key;
+		
+		while(current != null) {
+			if(k.compareTo(current.key) < 0) {
+				parent = current;
+				current = current.left;
+			}
+			else if (k.compareTo(current.key) > 0) {
+				parent = current;
+				current = current.right;
+			}
+			else {
+				// remove leaf node
+				if(current.right == null && current.left == null && parent.right == current) {
+					parent.right = null;
+					return current.value;
+				}
+				else if(current.right == null && current.left == null && parent.left == current) {
+					parent.left = null;
+					return current.value;
+				}
+				
+				// remove node with one child
+				else if(current.right != null && current.left == null) {
+					Node tempNode = current;
+					if (parent.right == current) {
+						parent.right = current.right;
+					}
+					else {
+						parent.left = current.right;
+					}
+					return tempNode.value;
+				}
+				
+				else if(current.left != null && current.right == null) {
+					Node tempNode = current;
+					if (parent.right == current) {
+						parent.right = current.left;
+					}
+					else {
+						parent.left = current.left;
+					}
+					return tempNode.value;
+				}
+				// remove node with 2 children
+				else if(current.left != null && current.right != null) {
+					Node pred = current.left;
+					Node tempNode = current;
+					while(pred != null) {
+						if(pred.right == null) {
+							break;
+						}
+						pred = pred.right;
+					}
+					Node temp2 = pred;
+					remove(pred.key);
+					current.key = temp2.key;
+					current.value = temp2.value;
+					return tempNode.value;
+				}
+			}
+		}
 		return null;
+		
 	}
 
 	@Override
