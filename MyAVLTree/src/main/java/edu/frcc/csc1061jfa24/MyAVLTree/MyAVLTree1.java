@@ -1,8 +1,5 @@
 package edu.frcc.csc1061jfa24.MyAVLTree;
 
-// homework is right right imbalance and right left imbalance
-// look at visualizer in d2l
-
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -13,7 +10,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-public class MyAVLTree <K,V> implements Map<K,V>, Iterable<V>{
+import edu.frcc.csc1061jfa24.MyAVLTree.MyAVLTree.Node;
+
+public class MyAVLTree1<K,V> implements Map<K,V>, Iterable<edu.frcc.csc1061jfa24.MyAVLTree.MyAVLTree1.Node>{
 	private Node root = null;
 	private int size = 0;
 	private List<Node> path = new ArrayList<>();
@@ -25,130 +24,119 @@ public class MyAVLTree <K,V> implements Map<K,V>, Iterable<V>{
 		private Node right = null;
 		private int height;
 		
-		
 		public Node(K key, V value) {
 			this.key = key;
 			this.value = value;
 		}
 
-
 		public K getKey() {
 			return key;
 		}
-
 
 		public void setKey(K key) {
 			this.key = key;
 		}
 
-
 		public V getValue() {
 			return value;
 		}
-
 
 		public void setValue(V value) {
 			this.value = value;
 		}
 
-
 		public Node getLeft() {
 			return left;
 		}
-
 
 		public void setLeft(Node left) {
 			this.left = left;
 		}
 
-
 		public Node getRight() {
 			return right;
 		}
-
 
 		public void setRight(Node right) {
 			this.right = right;
 		}
 
-
 		public int getHeight() {
 			return height;
 		}
 
-
 		public void setHeight(int height) {
 			this.height = height;
 		}
-		
 	}
 
 	@Override
-	public Iterator<V> iterator() {
+	public Iterator iterator() {
 		return new RecursiveIterator();
 	}
 	
-	private class RecursiveIterator implements Iterator<V> {
-		private List<V> list = new LinkedList<>();
+	private class RecursiveIterator implements Iterator<Node> {
+
+		private List<Node> list = new LinkedList<>();
 		
 		public RecursiveIterator() {
-			inOrder(root);
+			inorder(root);
 		}
 		
-		private void inOrder(Node node) {
-			if(node == null) {
+		private void inorder(Node node) {
+			if (node == null) {
 				return;
 			}
-			// in order traversal(left, parent, right)left, add,right
-			// pre order would be add, left, then right
-			// post order would be left, right, then add
-			inOrder(node.left);
-			list.add(node.value);
-			inOrder(node.right);
+			inorder(node.left);
+			list.add(node);
+			inorder(node.right);
 		}
-		
-		private void preOrder(Node node) {
-			if(node == null) {
-				return;
-			}
-			list.add(node.value);
-			preOrder(node.left);
-			preOrder(node.right);
-		}
-		private void postOrder(Node node) {
-			if(node == null) {
-				return;
-			}
 			
-			postOrder(node.left);
-			postOrder(node.right);
-			list.add(node.value);
-		}
-
+//		private void preorder(Node node) {
+//			if (node == null) {
+//				return;
+//			}
+//			list.add(node.value);
+//			preorder(node.left);
+//			preorder(node.right);
+//		}
+//	
+//		private void postorder(Node node) {
+//			if (node == null) {
+//				return;
+//			}
+//			postorder(node.left);
+//			postorder(node.right);
+//			list.add(node.value);
+//		}
+		
 		@Override
 		public boolean hasNext() {
 			return !list.isEmpty();
 		}
 
 		@Override
-		public V next() {
+		public Node next() {
 			return list.remove(0);
 		}
 		
 	}
+
 	private class NonRecursiveIterator implements Iterator<V> {
-// example iterator non recursively, similar to exam 2 but in order
 		private Deque<Node> stack = new ArrayDeque<>();
+		
 		public NonRecursiveIterator() {
 			pushOnStack(root);
 		}
+		
 		public void pushOnStack(Node node) {
 			Node current = node;
-			while(current != null) {
+			while (current != null) {
 				stack.push(current);
-				current=current.left;
+				current = current.left;
 			}
 		}
+		
 		@Override
 		public boolean hasNext() {
 			return !stack.isEmpty();
@@ -163,7 +151,7 @@ public class MyAVLTree <K,V> implements Map<K,V>, Iterable<V>{
 		}
 		
 	}
-
+	
 	@Override
 	public int size() {
 		return size;
@@ -171,7 +159,7 @@ public class MyAVLTree <K,V> implements Map<K,V>, Iterable<V>{
 
 	@Override
 	public boolean isEmpty() {
-		return size==0;
+		return size == 0;
 	}
 
 	@Override
@@ -192,7 +180,7 @@ public class MyAVLTree <K,V> implements Map<K,V>, Iterable<V>{
 		Comparable<K> k = (Comparable<K>) key;
 		
 		while(current != null) {
-			if(k.compareTo(current.key) < 0) {
+			if (k.compareTo(current.key) < 0 ) {
 				current = current.left;
 			}
 			else if (k.compareTo(current.key) > 0) {
@@ -202,12 +190,13 @@ public class MyAVLTree <K,V> implements Map<K,V>, Iterable<V>{
 				return current.value;
 			}
 		}
+		
 		return null;
 	}
 
 	@Override
 	public V put(K key, V value) {
-		if(root==null) {
+		if (root == null) {
 			Node newNode = new Node(key, value);
 			root = newNode;
 			size++;
@@ -237,19 +226,22 @@ public class MyAVLTree <K,V> implements Map<K,V>, Iterable<V>{
 		}
 		
 		Node newNode = new Node(key, value);
-		if(k.compareTo(parent.key) < 0) {
+		if (k.compareTo(parent.key) < 0) {
 			parent.left = newNode;
 		}
 		else {
 			parent.right = newNode;
 		}
+		
 		updateHeight(root);
+		balancePath();
 		
 		size++;
-		return value;
+		return null;
 	}
+	
 	private void updateHeight(Node node) {
-		if (node.left == null && node.right == null) {
+		if(node.left == null && node.right == null) {
 			node.height = 0;
 		}
 		else if (node.left == null) {
@@ -259,7 +251,7 @@ public class MyAVLTree <K,V> implements Map<K,V>, Iterable<V>{
 			node.height = node.left.height + 1;
 		}
 		else {
-			node.height = Math.max(node.left.height, node.right.height) + 1;
+			node.height = Math.max(node.left.height,  node.right.height) + 1;
 		}
 	}
 	
@@ -275,33 +267,36 @@ public class MyAVLTree <K,V> implements Map<K,V>, Iterable<V>{
 			balanceFactor = current.right.height - current.left.height;
 		}
 		return balanceFactor;
-	}
+ 	}
 	
 	private void balancePath() {
-		for(int i = path.size() - 1; i >= 0; i--) {
+		for (int i = path.size() - 1; i >= 0; i--) {
 			Node gp = path.get(i);
 			updateHeight(gp);
 			Node parent_of_gp = null;
-			if(i > 0) {
-				parent_of_gp = path.get(i -1);
+			if (i > 0) {
+				parent_of_gp = path.get(i - 1);
 			}
 			
 			switch(balanceFactor(gp)) {
 				case -2:
-					if(balanceFactor(gp.left) <= 0) {
+					if (balanceFactor(gp.left) <= 0) {
 						//LL imbalance
 						balanceLL(gp, parent_of_gp);
 					}
 					else {
-						//LR imbalance
+						// LR imbalance
+						balanceLR(gp, parent_of_gp);
 					}
 					break;
 				case 2:
-					if(balanceFactor(gp.right) >= 0) {
-						//RR imbalance
+					if (balanceFactor(gp.right) >= 0) {
+						// RR 
+						balanceRR(gp, parent_of_gp);
 					}
 					else {
-						//RL imbalance
+						// RL imbalance
+						balanceRL(gp, parent_of_gp);
 					}
 					break;
 			}
@@ -312,7 +307,65 @@ public class MyAVLTree <K,V> implements Map<K,V>, Iterable<V>{
 		Node parent = gp.left;
 		Node child = parent.left;
 		
-		// deal with gp connection to rest of tree
+		// Deal with gp connection to it's parent
+		if (gp == root) {
+			root = parent;
+		}
+		else {
+			if (parentOfGp.left == gp) {
+				parentOfGp.left = parent;
+			}
+			else {
+				parentOfGp.right = parent;
+			}
+		}
+	
+		// Make other node hanging off parent to gp
+		gp.left = parent.right;
+		// Move gp to right of parent
+		parent.right = gp;
+
+		updateHeight(gp); 
+		updateHeight(child);
+		updateHeight(parent);
+	}
+	
+	private void balanceLR(Node gp, Node parentOfGp) {
+		Node parent = gp.left;
+		Node child = parent.right;
+
+		// Deal with gp connection to it's parent
+		if (gp == root) {
+			root = child;
+		}
+		else {
+			if (parentOfGp.left == gp) {
+				parentOfGp.left = child;
+			}
+			else {
+				parentOfGp.right = child;
+			}
+		}
+		
+		// Since child is going to lose it's nodes 
+		// assign them to the right place first
+		parent.right = child.left;
+		gp.left = child.right;
+		
+		// Now change child's children
+		child.left = parent;
+		child.right = gp;
+		
+		updateHeight(gp);
+		updateHeight(parent);
+		updateHeight(child);
+	}
+	
+	// Homework. See D2L
+	private void balanceRR(Node gp, Node parentOfGp) {
+		Node parent = gp.right;
+		Node child = parent.right;
+		
 		if (gp == root) {
 			root = parent;
 		}
@@ -324,98 +377,42 @@ public class MyAVLTree <K,V> implements Map<K,V>, Iterable<V>{
 				parentOfGp.right = parent;
 			}
 		}
-		// make node hanging off parent move to gp
-		gp.left = parent.right;
-		// move gp to right of parent
-		parent.right = gp;
+		gp.right = parent.left;
+		parent.left = gp;
 		
-		// go bottom up, updating parent first would be wrong, using gp and childs old heights
+		
 		updateHeight(gp);
 		updateHeight(child);
 		updateHeight(parent);
 	}
+private void balanceRL(Node gp, Node parentOfGp) {
+	Node parent = gp.right;
+	Node child = parent.left;
 	
-	private void balanceLR(Node gp, Node parentOfGp) {
-		Node parent = gp.left;
-		Node child = parent.right;
-		
-		if (gp == root) {
-			root = child;
+	if (gp == root) {
+		root = child;
+	}
+	else {
+		if (parentOfGp.left == gp){
+			parentOfGp.left = child;
 		}
 		else {
-			if (parentOfGp.left == gp){
-				parentOfGp.left = child;
-			}
-			else {
-				parentOfGp.right = child;
-			}
+			parentOfGp.right = child;
 		}
-		// since child is going to lose it's nodes
-		// assign them to the right place first
-		parent.right = child.left;
-		gp.left = child.right;
-		
-		//now change child's child nodes
-		child.left = parent;
-		child.right = gp;
-		
-		updateHeight(gp);
-		updateHeight(parent);
-		updateHeight(child);
 	}
+	parent.left = child.right;
+	gp.right = child.left;
+	child.right = parent;
+	child.left = gp;
 	
-	//homework
-	private void balanceRR(Node gp, Node parentOfGp) {
-			Node parent = gp.right;
-			Node child = parent.right;
-			
-			if (gp == root) {
-				root = parent;
-			}
-			else {
-				if (parentOfGp.left == gp){
-					parentOfGp.left = parent;
-				}
-				else {
-					parentOfGp.right = parent;
-				}
-			}
-			gp.right = parent.left;
-			parent.left = gp;
-			updateHeight(gp);
-			updateHeight(child);
-			updateHeight(parent);
-		}
-	private void balanceRL(Node gp, Node parentOfGp) {
-		Node parent = gp.right;
-		Node child = parent.left;
-		
-		if (gp == root) {
-			root = child;
-		}
-		else {
-			if (parentOfGp.left == gp){
-				parentOfGp.left = child;
-			}
-			else {
-				parentOfGp.right = child;
-			}
-		}
-		parent.left = child.right;
-		gp.right = child.left;
-		child.right = parent;
-		child.left = gp;
-		
-		updateHeight(gp);
-		updateHeight(parent);
-		updateHeight(child);
-	}
+	updateHeight(gp);
+	updateHeight(parent);
+	updateHeight(child);
+}
+	
 	@Override
 	public V remove(Object key) {
-		// homework, 3 cases, look in D2L
-		// 1st step, find node. comparable K. keep track of parent
-		// 2nd check children
-		// cut off leaf, copy leaf, or in order predecessor through recursion
+		// TODO Auto-generated method stub
 		return null;
 	}
 
@@ -448,6 +445,9 @@ public class MyAVLTree <K,V> implements Map<K,V>, Iterable<V>{
 		// TODO Auto-generated method stub
 		return null;
 	}
+	
+	
+	
 	
 	
 	
