@@ -182,7 +182,61 @@ public class Graph<E> {
 	 * spanning tree will be a new graph
 	 */
 	public Graph<E> findMinimumSpanningTree() {
+		List<Edge> sortedEdges = new ArrayList<>();
+		List<Edge> kruskal = new ArrayList<>();
+		List<Vertex> vertices2 = new ArrayList<>();
+		List<Vertex> visited = new ArrayList<>();
+		
+		// copy vertex list
+		for(Vertex vertex : vertices) {
+			vertices2.add(vertex);
+		}
+		// get all edges into list to be sorted
+		for (Vertex vertex : vertices) {
+			for (Edge edge : vertex.neighbors) {
+				sortedEdges.add(edge);
+			}
+		}
+		// clear all paths from the vertices for new graph
+		for(Vertex vertex : vertices2) {
+			vertex.neighbors.clear();
+		}
+		
+		//sort edges
+		Collections.sort(sortedEdges);
+		
+		// add first element as starting point
+		// first element should be lowest
+		Edge firstOne = sortedEdges.get(0);
+		kruskal.add(firstOne);
+		
+		// add reversed path since it's not a directed graph
+		kruskal.add(new Edge(firstOne.d, firstOne.s, firstOne.weight));
+		
+		//add to visited list to prevent loop/cycle
+		visited.add(firstOne.d);
+		visited.add(firstOne.s);
+		
+		// look for edges that connect unconnected vertices
+		for(Edge edge : sortedEdges) {
+			if(!visited.contains(edge.s) || !visited.contains(edge.d)){
+				// add the new path and it's reverse
+				kruskal.add(edge);
+				kruskal.add(new Edge(edge.d, edge.s, edge.weight));
+				//mark vertices visited
+				visited.add(edge.d);
+				visited.add(edge.s);
+			}
+		}
+		
+		// create new graph, update vertices paths
+		Graph<E> spanTree = new Graph<E>(vertices2);
+		for(Edge edge : kruskal) {
+			spanTree.addEdge(edge);
+		}
+		//update graph vertices
+		spanTree.vertices = vertices2;
 
-		return null;
+		return spanTree;
 	}
 }
